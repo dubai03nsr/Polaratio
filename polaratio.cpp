@@ -13,7 +13,7 @@ const int m = 6323, n = 49;
 
 using namespace std;
 
-double polar[n][n], align[n][n], mat[n][m], sum[n];
+double polar[n][n],mat[n][m], sum[n];
 int invRank[n][m], ranks[n][m];
 double one[m + 1], x[m + 1], y[m + 1], xy[m + 1];
 
@@ -22,8 +22,8 @@ int main(int argc, char **argv) {
 	ifstream in(dir);
 	ios_base::sync_with_stdio(0); cin.tie(0);
 
-	double zero = 1e9, base = stod(argv[3]);
-	bool colnames = stoi(argv[4]), rownames = stoi(argv[5]);
+	double zero = 1e9;
+	bool coeff = stoi(argv[3]), colnames = stoi(argv[4]), rownames = stoi(argv[5]);
 	if (colnames) { string line; getline(in, line); }
 	for (int i = 0; i < m; i++) {
 		string line; getline(in, line);
@@ -49,10 +49,9 @@ int main(int argc, char **argv) {
 	for (j = 1; j < n; j++) {
 		double *c2 = mat[j], avg2 = sum[j] / m;
 		for (i = 0; i < j; i++) {
-			double *c1 = mat[i], avg1 = sum[i] / m, cov = 0, same = 0;
+			double *c1 = mat[i], avg1 = sum[i] / m, cov = 0;
 			for (int k = 0; k < m; k++) {
 				cov += (avg1 - c1[k]) * (avg2 - c2[k]);
-				if ((mat[i][k] < 0.1) == (mat[j][k] < 0.1)) same++;
 			}
 			
 			memset(one, 0, sizeof one);
@@ -89,30 +88,22 @@ int main(int argc, char **argv) {
 			}
 
 			polar[i][j] = polar[j][i] = neg / (m * cov + neg + 1e-9);
-			align[i][j] = align[j][i] = 1 - same / m;
 			if (++num == nC2 * dec) cout << dec++ << "0%" << endl;
 		}
 	}
 
-	ofstream out(stem + "Polaratio.txt");
-	if (base > 1) {
-		base = log(base);
-		for (i = 0; i < n; i++) {
-			for (j = 0; j < n; j++) {
-				out << (polar[i][j] > 0 ? -tanh(log(polar[i][j]) / base) : 1) << " \n"[j == n - 1];
-			}
-		}
-	} else {
-		for (i = 0; i < n; i++) {
-			for (j = 0; j < n; j++) {
-				out << (i == j ? 0 : polar[i][j]) << " \n"[j == n - 1];
-			}
-		}
-	}
-	out.close(); out.open(stem + "Alignment.txt");
+	ofstream out(stem + "PD.txt");
 	for (i = 0; i < n; i++) {
 		for (j = 0; j < n; j++) {
-			out << (i == j ? 0 : align[i][j]) << " \n"[j == n - 1];
+			out << polar[i][j] << " \n"[j == n - 1];
+		}
+	}
+	if (coeff) {
+		ofstream out(stem + "PC.txt");
+		for (i = 0; i < n; i++) {
+			for (j = 0; j < n; j++) {
+				out << 2 / (polar[i][j] + 1) - 1 << " \n"[j == n - 1];
+			}
 		}
 	}
 
