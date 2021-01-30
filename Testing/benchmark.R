@@ -1,6 +1,7 @@
 library(SC3)
 library(SingleCellExperiment)
 library(cluster)
+library(mclust)
 
 # consensus approach
 ARIs <- vector()
@@ -15,12 +16,7 @@ for (i in 1:length(authors)) {
 	ref <- scan('ref.txt')
 	table <- read.table('norm.txt')
 	dist <- as.dist(read.table('polaratio.txt'))
-	# dist <- cor(table, method = 'spearman') # 'pearson'
-	# for (i in 1:n) {
-	# 	for (j in 1:n) {
-	# 		dist[i, j] <- 1 - dist[i, j]
-	# 	}
-	# }
+	# dist <- 1 - cor(table, method = 'spearman') # 'pearson'
 	# dist <- dist(t(table)) # euclidean
 
 	labels <- cutree(hclust(as.dist(dist)), k)
@@ -58,7 +54,7 @@ for (i in 1:length(authors)) {
 	ref <- scan('ref.txt')
 	table <- read.table('norm.txt')
 
-	for (j in 1:10) {
+	for (j in 1:1) {
 		sc <- SingleCellExperiment(assays = list(counts = table, logcounts = as.matrix(table)))
 		rowData(sc)$feature_symbol <- vector(mode = 'character', length = dim(sc@assays)[1])
 
@@ -66,7 +62,7 @@ for (i in 1:length(authors)) {
 
 		# individual distance metric
 		# sc <- sc3_prepare(sc, gene_filter=F)
-		# dist <- as.matrix(read.table(''))
+		# dist <- as.matrix(read.table('polaratio.txt'))
 		# sc@metadata[["sc3"]][["distances"]][["euclidean"]] <- dist
 
 		sc <- sc3_calc_consens(sc3_kmeans(sc3_calc_transfs(sc), k))

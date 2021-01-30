@@ -30,11 +30,14 @@ int main(int argc, char **argv) {
 		istringstream iss(line);
 		vector<string> tokens{istream_iterator<string>{iss}, istream_iterator<string>{}};
 		for (int j = 0; j < n; j++) {
-			mat[j][i] = stod(tokens[j + rownames]);
+			try {
+				mat[j][i] = stod(tokens[j + rownames]);
+			} catch (const exception& e) {}
 			sum[j] += mat[j][i];
 			zero = min(zero, mat[j][i]);
 		}
 	}
+	zero += 1e-9;
 	for (int i = 0; i < n; i++) {
 		iota(invRank[i], invRank[i] + m, 0);
 		sort(invRank[i], invRank[i] + m, [=](int a, int b) { return mat[i][a] < mat[i][b]; });
