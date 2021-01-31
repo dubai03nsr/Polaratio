@@ -7,13 +7,14 @@ const int m = 6323, n = 49;
 #include <iostream>
 #include <iterator>
 #include <numeric>
+#include <omp.h>
 #include <sstream>
 #include <string>
 #include <vector>
 
 using namespace std;
 
-double polar[n][n],mat[n][m], sum[n];
+double polar[n][n], mat[n][m], sum[n];
 int invRank[n][m], ranks[n][m];
 double one[m + 1], x[m + 1], y[m + 1], xy[m + 1];
 
