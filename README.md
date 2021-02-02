@@ -24,3 +24,14 @@ Polaratio is a monotonic correlation metric that accounts for the magnitude of s
 | ```-s``` or ```--single``` | Do not use multiple CPU cores. (Using this flag will decrease the total CPU time but increase the wall time.)      |
 
 3. Modify and run the code in ```consensus.R``` to produce the cell clustering.
+
+## Citation
+If you found our work useful in your research, please consider citing the following paper:
+```
+@unpublished{wang2021polaratio,
+author = {Wang, Victor and Cicalese, Pietro A and Louis Sam Titus, A S C and Mohan, Chandra},
+title = {{Polaratio: A magnitude-contingent monotonic correlation metric and its improvements to scRNA-seq clustering}},
+year = {2021},
+note = {{Manuscript submitted to ISMB; pre-print available at https://doi.org/10.1101/2020.12.20.423308}}
+}
+```
